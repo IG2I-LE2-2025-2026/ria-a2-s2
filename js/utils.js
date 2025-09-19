@@ -11,30 +11,35 @@ function trace(s) {
 	*/
 }
 
-// Cette variable est globale
-var compteur = 10;
+function mkDebug() {
+  // Cette fonction crée des fonctions debug
+  // avec une fermeture transitive sur compteur
+  
+  // Cette variable est locale à mkDebug
+  var compteur = 10;
 
-function debug(s) {
-	// affiche un nombre de messages limité par un compteur
-	// affiche le compteur si s n'est pas fourni
-	// e.g. après 10 affichages, la fonction ne fait plus rien 
-	// comment remettre à 0 le compteur ?   
-	
-	if (s === "RAZ") {
-	  compteur = 10;
-	}
-	
-	if (compteur > 0) {
-	  if (s === undefined) {
-  	  trace(compteur);
-	  } else {
-	    trace(s);
+  return function(s) {
+	  // affiche un nombre de messages limité par un compteur
+	  if (s === "RAZ") {
+	    compteur = 10;
+	  }
+	  
+	  if (compteur > 0) {
+	    if (s === undefined) {
+    	  trace(compteur);
+	    } else {
+	      trace(s);
+      }
+	    compteur--;
     }
-	  compteur--;
   }
 }
 
+// On crée une fonction debug
+var debug = mkDebug();
+
 function getReference(refOrId) {
+  // Retourne la référence d'un element dont la référence ou l'identifiant est fourni
 	var ref;
 	if (typeof refOrId === "object") {
 	  ref = refOrId;
