@@ -70,19 +70,19 @@ function val(refOrId, val) {
 	// l'élément est un champ de formulaire
 	// la fonction doit pouvoir manipuler l'état des champs de type checkbox et radio 
 	var ref = getReference(refOrId);
+	var monAttribut;
+	
 	if (ref.type === "checkbox" ||
 	    ref.type === "radio") {
-	  if (val === undefined) {
-	    return ref.checked;
-	  } else {
-	    ref.checked = val;
-	  }
+    monAttribut = "checked";
   } else {
-	  if (val === undefined) {
-	    return ref.value;
-	  } else {
-	    ref.value = val;
-	  }
+    monAttribut = "value";
+  };
+  
+  if (val === undefined) {
+    return ref[monAttribut];
+  } else {
+    ref[monAttribut] = val;
   }
 }
 </script>
