@@ -69,11 +69,21 @@ function val(refOrId, val) {
 	// affecte une valeur à l'élément dont la référence ou l'id est fourni; si val n'est pas fourni, on renvoie son contenu
 	// l'élément est un champ de formulaire
 	// la fonction doit pouvoir manipuler l'état des champs de type checkbox et radio 
-	if (val === undefined) {
-	  return getReference(refOrId).value;
-	} else {
-	  getReference(refOrId).value = val;
-	}
+	var ref = getReference(refOrId);
+	if (ref.type === "checkbox" ||
+	    ref.type === "radio") {
+	  if (val === undefined) {
+	    return ref.checked;
+	  } else {
+	    ref.checked = val;
+	  }
+  } else {
+	  if (val === undefined) {
+	    return ref.value;
+	  } else {
+	    ref.value = val;
+	  }
+  }
 }
 </script>
 
@@ -86,5 +96,17 @@ function val(refOrId, val) {
   <label id="l" for="t">Votre nom :</label>
   <input id="t" type="text" />
   <input id="b" type="button" value="Envoyer" />
+  <br />
+  <input id="cb" type="checkbox" />
+  <label id="lcb" for="cb">Cocher ou ne pas cocher</label>
+  <br />
+  <input id="r1" type="radio" name="couleur" />
+  <label for="r1">Rouge</label>
+  <br />
+  <input id="r2" type="radio" name="couleur" />
+  <label for="r2">Vert</label>
+  <br />
+  <input id="r3" type="radio" name="couleur" />
+  <label for="r3">Bleu</label>
 </form>
 
