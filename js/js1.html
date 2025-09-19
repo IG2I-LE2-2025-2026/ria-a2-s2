@@ -34,9 +34,17 @@ function debug(s) {
   }
 }
 
-function show(refOrId,display) {
+function show(refOrId, display = "block") {
 	// affiche l'élément dont la référence ou l'id est fourni
 	// le paramètre display doit valoir block par défaut
+	var ref;
+	if (typeof refOrId === "object") {
+	  ref = refOrId;
+	} else if (typeof refOrId === "string" &&
+	         document.getElementById(refOrId)) {
+	    ref = document.getElementById(refOrId);
+    }
+	ref.style.display = display;
 }
 
 function hide(refOrId) {
