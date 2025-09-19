@@ -34,9 +34,7 @@ function debug(s) {
   }
 }
 
-function show(refOrId, display = "block") {
-	// affiche l'élément dont la référence ou l'id est fourni
-	// le paramètre display doit valoir block par défaut
+function getReference(refOrId) {
 	var ref;
 	if (typeof refOrId === "object") {
 	  ref = refOrId;
@@ -44,7 +42,13 @@ function show(refOrId, display = "block") {
 	         document.getElementById(refOrId)) {
 	    ref = document.getElementById(refOrId);
     }
-	ref.style.display = display;
+  return ref;
+}
+
+function show(refOrId, display = "block") {
+	// affiche l'élément dont la référence ou l'id est fourni
+	// le paramètre display doit valoir block par défaut
+	getReference(refOrId).style.display = display;
 }
 
 function hide(refOrId) {
@@ -54,13 +58,22 @@ function hide(refOrId) {
 
 function html(refOrId, val) {
 	// affecte une valeur à l'élément dont la référence ou l'id est fourni; si val n'est pas fourni, on renvoie son contenu
+	if (val === undefined) {
+	  return getReference(refOrId).innerHTML;
+	} else {
+	  getReference(refOrId).innerHTML = val;
+	}
 }
 
 function val(refOrId, val) {
 	// affecte une valeur à l'élément dont la référence ou l'id est fourni; si val n'est pas fourni, on renvoie son contenu
 	// l'élément est un champ de formulaire
 	// la fonction doit pouvoir manipuler l'état des champs de type checkbox et radio 
-	
+	if (val === undefined) {
+	  return getReference(refOrId).value;
+	} else {
+	  getReference(refOrId).value = val;
+	}
 }
 </script>
 
