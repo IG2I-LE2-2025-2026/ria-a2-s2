@@ -2,45 +2,11 @@
   // Fonctions show, hide, html, val
 </script>
 
+<script src="A2_ajax.js">
+  // Fonction ajax
+</script>
+
 <script type="text/javascript">
-
-var request = false;
-
-function envoiRequete(type,url,donnees,callback)
-{
-	request = new XMLHttpRequest(); 
-
-	if (type=='GET') 
-	{
-		request.open("GET", url+"?"+donnees, true);
-		donnees=null;
-	}
-	else 
-	{
-		request.open("POST", url, true);
-		request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		request.setRequestHeader("Content-length", donnees.length);
-		request.setRequestHeader("Connection", "close");
-	}
-
-	request.onreadystatechange = callback;
-	request.send(donnees);
-}
-
-function traiteReponse()
-{
-	//alert(request.readyState);	// à décommenter
-	if (request.readyState == 4) 
-	{
-	    if (request.status == 200) 
-	    {
-			  reponse = request.responseText;
-			  console.log(reponse);
-			  html("reponse", reponse);
-	    }
-	}
-} 
-
 function envoyer(refBtn)
 {
 	var type, donnees;
@@ -51,8 +17,14 @@ function envoyer(refBtn)
 	}
 	
 	donnees = "cle=" + val("cle");
+	console.log(donnees);
 	
-	envoiRequete(type, "A2_data.php", donnees, traiteReponse)
+	ajax("A2_data.php",
+	  {'type': type,
+	   'donnees': donnees,
+	   'callback': function(r) { html("reponse", r); }
+    }
+  )
 }
 
 </script>
