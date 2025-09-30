@@ -6,7 +6,7 @@ if (isset($_GET["debutNom"]))
 	// On va ouvrir un fichier et afficher les lignes 
 	// où le prénom ou le nom contient ce texte
 
-	$tabLignes = file("le2_toupdate.txt");
+	$tabLignes = file("LE2_2025_2026.csv");
 	foreach ($tabLignes as $ligne)
 	{
 		// EXO1 : effectuer une recherche sur nom ou prénom 
