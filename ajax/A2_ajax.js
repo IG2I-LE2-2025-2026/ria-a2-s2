@@ -1,9 +1,51 @@
 // Fonction qui effectue un appel AJAX
-function ajax(url, oConfig) {
+function ajax(urlOrOConfig, oConfig) {
 	var request = new XMLHttpRequest(); 
-	var type = oConfig.type,
-	    donnees = oConfig.donnees,
-	    callback = oConfig.callback;
+	var oRes, url, type, oDonnees, donnees, callback;
+
+  function enrichir(oDefaut, oModif) {
+    // Enrichir oModif avec le contenu de oDefaut
+    var oRes = {};
+    // On recopie oModif dans oRes (copie superficielle, mais ici c'est suffisant car pas d'objets imbriqués)
+    for (prop in oModif) {
+      oRes[prop] = oModif[prop];
+    }
+    // On complète avec le contenu de oDefaut
+    for (prop in oDefaut) {
+      if (oRes[prop] === undefined) {
+        oRes[prop] = oDefaut[prop];
+      }
+    }
+    return oRes;
+  }
+  
+  if (typeof urlOrOConfig === "object") {
+    oConfig = urlOrOConfig;
+    url = oConfig.url;
+  } else {
+    if (typeof urlOrOConfig === "string") {
+      url = urlOrOConfig;
+      if (oConfig === undefined) {
+        oConfig = {};
+      }
+    }
+  }
+  
+  oRes = enrichir({
+    'type': 'GET',
+    'donnees': '',
+    'callback': function(r) { console.log(r) }
+  }, oConfig);
+  
+	type = oRes.type;
+	oDonnees = oRes.donnees;
+	callback = oRes.callback;
+	
+	donnees = '';
+	for (var prop in oDonnees) {
+	  donnees += "&" + prop + "=" + oDonnees[prop];
+	}
+	donnees = donnees.substring(1);
 	
   function traiteReponse()
   {
@@ -33,3 +75,4 @@ function ajax(url, oConfig) {
 	request.onreadystatechange = traiteReponse;
 	request.send(donnees);
 }
+

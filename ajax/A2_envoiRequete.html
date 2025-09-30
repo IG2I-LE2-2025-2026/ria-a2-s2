@@ -16,7 +16,7 @@ function envoyer(refBtn)
 	  type = "POST";
 	}
 	
-	donnees = "cle=" + val("cle");
+	donnees = { 'cle': val("cle") };
 	console.log(donnees);
 	
 	ajax("A2_data.php",
