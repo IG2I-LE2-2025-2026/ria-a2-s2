@@ -34,6 +34,14 @@
 	text-align:center;
 	background-color:lightgrey;
 }
+
+#load {
+  max-height: 20px;
+  display: none;
+  position: absolute;
+  right: 20px;
+  top: 10px;
+}
 </style>
 
 <script src="utils.js">
@@ -50,6 +58,30 @@ function maj() {
 	html('rendu', val('code'));
 }
 
+function maj_auto() {
+  var load_affiche = false;
+  boucle({
+    traitement: maj,
+    continuer: function() { return val("cb"); }
+  });
+  boucle({
+    periode: 0.5,
+    traitement: function() { 
+      if (!load_affiche) {
+        show("load", "inline");
+        load_affiche = true;
+      } else {
+        hide("load");
+        load_affiche = false;
+      }
+    },
+    continuer: function() {
+      hide("load");
+      return val("cb");
+    }
+  });
+}
+
 function init()
 {
 	console.log("Code a completer a l'aide de la librairie de fonctions 'boucle'");
@@ -62,7 +94,8 @@ function init()
 <div id="inputs">
 	<input value="actualiser le rendu" type="button" onclick="maj();">
 	<input id="cb" type="checkbox">
-	<label for="cb">automatiquement</label>
+	<label for="cb" onclick="maj_auto();">automatiquement</label>
+	<img id="load" src="loading-load.gif" />
 </div>
 
 <textarea id="code">&lt;h1&gt; Un paragraphe &lt;/h1&gt;
