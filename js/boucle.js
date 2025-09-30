@@ -1,28 +1,51 @@
 // Fnction de traitement en boucle
 
 function boucle(
-  iPeriode,
+  iPeriodeOuJSON,
   fnCbTraitement,
   fnCbContinuer = function() { return true; }
 ) {
-  // Objectif : déclencher un appel à la fonction fnCbTraitement
-  // toutes les iPeriode secondes, 
-  // tant que fnCbContinuer renvoie vrai
-
-  // fnCbTraitement est une fonction de rappel ("CALLBACK")
-  // elle sera appelée plus tard
-  // pour l'appeler, il suffit d'ajouter les parenthèses !
-
-  // rendre le 3ème argument optionnel
+  // Objectif : déclencher un appel à la fonction fnCbTraitement toutes les iPeriode secondes, 
   
-  /*
-  // Version « à l'ancienne » :
-  if (fnCbContinuer === undefined) {
-    fnCbContinuer = function() { return true; };
+  var iPeriode;
+  var oDefaut = {
+    periode: 1,
+    continuer: function() { return true; }
   }
-  */
+
+  function enrichir(oDefaut, oModif) {
+    // Enrichir oModif avec le contenu de oDefaut
+    
+    // Si pas de fonctions dans l'objet :
+    //var oRes = JSON.parse(JSON.stringify(oModif));
+    
+    var oRes = {};
+    // On recopie oModif dans oRes (copie superficielle, mais ici c'est suffisant car pas b'objets imbriqués)
+    for (prop in oModif) {
+      oRes[prop] = oModif[prop];
+    }
+    // On complète avec le contenu de oDefaut
+    for (prop in oDefaut) {
+      if (oRes[prop] === undefined) {
+        oRes[prop] = oDefaut[prop];
+      }
+    }
+    return oRes;
+  }
   
-  function repetition() {
+  // Cas arguments classiques ou JSON
+  if (typeof iPeriodeOuJSON === "number") {
+    iPeriode = iPeriodeOuJSON;
+  } else {
+    // iPeriodeOuJSON est un objet
+    var oRes = enrichir(oDefaut, iPeriodeOuJSON);
+    iPeriode = oRes.periode;
+    fnCbTraitement = oRes.traitement;
+    fnCbContinuer = oRes.continuer;
+  }
+  
+  //function repetition() {
+  var repetition = function() {
     console.log("repetition");
     if (fnCbContinuer()) {
       fnCbTraitement();
