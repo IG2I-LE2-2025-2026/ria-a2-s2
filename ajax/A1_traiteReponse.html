@@ -1,25 +1,48 @@
-<script type="text/javascript">
+<html>
+<head>
 
-function traiteReponse()
-{
-	//alert(request.readyState);	// à décommenter
-	if (request.readyState == 4) 
-	{
-	    if (request.status == 200) 
-	    {
-	    	var reponse = request.responseText;
-			alert("reponse recue:" + reponse);        
-	    }
-	}
-} 
-
-var request = new XMLHttpRequest(); 
-request.onreadystatechange = traiteReponse; 
-request.open('GET', "A1_data.php", true);
-request.send(null);
-
+<script src="../js/utils.js">
+  // Fonctions show, hide, html, val
 </script>
 
+<script type="text/javascript">
 
-<html>
+function getData() {
+  var request = new XMLHttpRequest(); 
+  
+  // La fonction appelée à chaque changement de request.readyState
+  function traiteReponse()
+  {
+	  //alert(request.readyState);	// à décommenter
+	  if (request.readyState == 4) 
+	  {
+	      if (request.status == 200) 
+	      {
+	      	var reponse = request.responseText;
+			    //alert("reponse recue:" + reponse);
+			    html("maDiv", reponse);
+	      }
+	  }
+  }
+  
+  // On prépare et on envoie la requête
+  request.onreadystatechange = traiteReponse; 
+  request.open('GET', "A1_data.php", true);
+  request.send(null);
+}
+
+</script>
+</head>
+
+<body>
+
+<div id="maDiv">
+
+</div>
+
+<input type="button" onclick="getData();" value="Envoyer" />
+
+
+</body>
+
 </html>
