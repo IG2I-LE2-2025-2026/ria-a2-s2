@@ -30,27 +30,16 @@
   <script src="js/ajax.js">
     // Fonction ajax
   </script>
-  <script>
-    function chargerSuggestions() {
-      var recherche = val("recherche");
-      // TODO : requête AJAX avec recherche
-    }
-    
-    function validerSuggestion(e) {
-      console.log(e);
-      val("recherche", html(e.target));
-    }
+  <script src="js/suggest.js">
+    // Fonctions pour le suggest
   </script>
 </head>
 <body>
 
-<input id="recherche" class="recherche" type="text" onkeyup="chargerSuggestions(); />
+<input id="recherche" class="recherche" type="text" onkeyup="chargerSuggestions();" />
 <input type="button" class="recherche" value="🔍" />
 
 <div id="suggest" onclick="validerSuggestion(event);">
-  <div class="suggestion">Maxime Folschette</div>
-  <div class="suggestion">Thomas Bourdeaud'huy</div>
-  <div class="suggestion">Félix le chat</div>
 </div>
 
 </body>
