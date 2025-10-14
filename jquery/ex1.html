@@ -47,6 +47,21 @@ function toggle(){
 		$("input[value='Cacher']").val("Afficher");
 } 
 
+var jComposantP = $("<p>")
+	.html("nouveau")
+	.click(function(){
+		console.log("click sur " + $(this).html());
+		// TODO : récupérer le contenu du P. 
+		// $(this) représente la référence jQuery
+		//  sur l'élément siège de l'événement 
+		// créer un input type text avec ce meme contenu
+		// insérer cet input à la place du P. 
+		// Lors de l'appui sur ENTREE dans cet input textr
+		// il faudra restaurer le P. avec son nouveau contenu 
+		// Lors de l'appui sur ESC dans la page 
+		// Il faudra annuler toutes les éditions 
+	});
+
 function ajouter(refBtn) {
 	// savoir quel est le bouton cliqué ? 
 	// références JS legacy : ref..
@@ -58,13 +73,14 @@ function ajouter(refBtn) {
 	// var index = $("input[value='+']").index(jBtn); 
 	// contenu du champ situé à côté du bouton cliqué : 
 	var contenu = jBtn.next().val(); 
-	var jP = $("<p>"); 
-	jP.html(contenu); 
+	var jCloneP = jComposantP.clone(true);
+	if (contenu != "") 
+		jCloneP.html(contenu); 
 	
 	if (isFirst) {
-		$("#contenu").prepend(jP); 
+		$("#contenu").prepend(jCloneP); 
 	} else {
-		$("#contenu").append(jP); 
+		$("#contenu").append(jCloneP); 
 	}
 	
 }
