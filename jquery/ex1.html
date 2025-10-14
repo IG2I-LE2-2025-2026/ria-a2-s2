@@ -1,22 +1,50 @@
 <script src="jquery-3.7.1.min.js"></script>
 <style>
-	.allume {background-color:yellow;}
-	.exemple {display:none;}
 </style>
 <script>
 	function decollage() {
-		$("p.exemple").addClass("allume").show("slow");
+		// symbole $ : alias pour fonction jQuery
+		// arguments : 
+		// $(selecteur)
+		// renvoie une collection jQuery 
+		// un objet qui contient des références vers des éléments du DOM 
+		// cet objet dispose de méthodes 
+		// qui s'appliquent généralement à TOUS les éléments de la collection 
+		// qui renvoient généralement la collection d'origine => permet la cascade d'appels !
+		
+		// $(selecteur, context)
+		// $("structure HTML")
+		// $(refJS)
+		
+		$("p.exemple")
+			.addClass("allume")
+			.show("slow");
 	}
+	
+	// input[value='Afficher']
+	// insérer des nouveau P : utiliser la page 58 
+	// insérer à l'intérieur : .append("contenu"),.prepend("contenu"),
+	// insérer à l'extérieur : 
+	// .after("contenu"); .before("contenu")
+
+
 </script>
 
 <body>
-	<input type="button" onclick="decollage()" value="GO"/>
-	<p class="exemple"> P1 </p>
-	<p class=""> P2 </p>
-	<p class="exemple"> P3 </p>
-	<div class="exemple"> div1 </div>
-	<div class=""> div2 </div>
-	<div class="exemple"> div3 </div>
+	<input type="button" value="Afficher"/>
+	<input type="button" value="+"/>
+	<input type="text"/>
+	
+	<div id="contenu">
+		<p> P1 </p>
+		<p> P2 </p>
+		<p> P3 </p>
+	</div>
+	
+	<input type="button" value="Afficher"/>
+	<input type="button" value="+"/>
+	<input type="text"/>
+	
 </body>
 
 
