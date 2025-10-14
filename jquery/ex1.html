@@ -1,5 +1,13 @@
 <script src="jquery-3.7.1.min.js"></script>
 <style>
+/* la présence de la classe "cache" 
+induit une invisibilité de l'objet */
+.cache {
+	display:none;
+}
+
+
+
 </style>
 <script>
 	function decollage() {
@@ -14,7 +22,7 @@
 		
 		// $(selecteur, context)
 		// $("structure HTML")
-		// $(refJS)
+		// collectionJquery = $(refJS)
 		
 		$("p.exemple")
 			.addClass("allume")
@@ -27,23 +35,56 @@
 	// insérer à l'extérieur : 
 	// .after("contenu"); .before("contenu")
 
+function toggle(){
+	// objectif : afficher ou cacher le contenu et les boutons 
+	// $("#contenu").toggle();
+	// changer l'état des éléments de la classe cache 
+	// en leur enlevant la classe "cache" 
+	$(".controle").toggleClass("cache");
+	if ($("input[value='Afficher']").length)
+		$("input[value='Afficher']").val("Cacher");
+	else 
+		$("input[value='Cacher']").val("Afficher");
+} 
 
+function ajouter(refBtn) {
+	// savoir quel est le bouton cliqué ? 
+	// références JS legacy : ref..
+	// références JQuery : j..
+	var jBtn = $(refBtn); 
+	// tester l'égalité entre deux réf. jquery ? 
+	var isFirst = $("input[value='+']").first().is(jBtn);
+	// trouver le numéro d'un élément dans une collection 
+	// var index = $("input[value='+']").index(jBtn); 
+	// contenu du champ situé à côté du bouton cliqué : 
+	var contenu = jBtn.next().val(); 
+	var jP = $("<p>"); 
+	jP.html(contenu); 
+	
+	if (isFirst) {
+		$("#contenu").prepend(jP); 
+	} else {
+		$("#contenu").append(jP); 
+	}
+	
+}
 </script>
 
 <body>
-	<input type="button" value="Afficher"/>
-	<input type="button" value="+"/>
-	<input type="text"/>
+	<input type="button" value="Afficher" onclick="toggle();"/>
+	<input type="button" value="+" class="controle cache"
+	onclick="ajouter(this);"/>
+	<input type="text" class="controle cache"/>
 	
-	<div id="contenu">
+	<div id="contenu" class="controle cache">
 		<p> P1 </p>
 		<p> P2 </p>
 		<p> P3 </p>
 	</div>
 	
-	<input type="button" value="Afficher"/>
-	<input type="button" value="+"/>
-	<input type="text"/>
+	<input type="button" value="Afficher" onclick="toggle();"/>
+	<input type="button" value="+" class="controle cache" onclick="ajouter(this);"/>
+	<input type="text" class="controle cache"/>
 	
 </body>
 
