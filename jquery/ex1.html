@@ -1,0 +1,22 @@
+<script src="jquery-3.7.1.min.js"></script>
+<style>
+	.allume {background-color:yellow;}
+	.exemple {display:none;}
+</style>
+<script>
+	function decollage() {
+		$("p.exemple").addClass("allume").show("slow");
+	}
+</script>
+
+<body>
+	<input type="button" onclick="decollage()" value="GO"/>
+	<p class="exemple"> P1 </p>
+	<p class=""> P2 </p>
+	<p class="exemple"> P3 </p>
+	<div class="exemple"> div1 </div>
+	<div class=""> div2 </div>
+	<div class="exemple"> div3 </div>
+</body>
+
+
