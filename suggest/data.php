@@ -10,14 +10,39 @@ if (isset($_GET["debutNom"]))
 	foreach ($tabLignes as $ligne)
 	{
 		// EXO1 : effectuer une recherche sur nom ou prénom 
-		if (preg_match("/^.*:(" . $cherche . ".*)$/i",$ligne,$tabResultats))
+		if (
+		preg_match("/^(.*):(" . $cherche . ".*):.*$/i",$ligne,$tabResultats)
+		||
+		preg_match("/^(".$cherche . ".*):(.*):.*$/i",$ligne,$tabResultats)
+		)
 		{
 			// EXO2 afficher nom ET prénom 
-			echo $tabResultats[1]; 
+			 
+			echo "<div class=\"suggestion\">"; 
+			echo $tabResultats[2] . " " . $tabResultats[1];
+			echo "</div>"; 
 		}
 	}
 
 	die("");
 }
-
+/*
+/^.*:(" . $cherche . ".*)$/i
+/expression ici/drapeaux
+drapeau : i <=> insensibilité à la casse 
+expression : ^.*:(" . $cherche . ".*)$ 
+expression avec remplacement de $cherche : ^.*:(Th.*)$
+^ <=> début 
+$ <=> fin 
+. <=> un caractère 
+* <=> répétition 0-n fois du motif qui précède 
+( ) <=> parenthèses capturantes : permet d'extraire une zone 
+*/
 ?>
+
+
+
+
+
+
+

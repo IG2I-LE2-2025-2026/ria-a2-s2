@@ -4,10 +4,11 @@ function chargerSuggestions() {
   console.log("chargerSuggestions : " + recherche);
   // TODO : requête AJAX avec recherche
   ajax({
-    'url': 'fixture.php',
+  	donnees : {debutNom: recherche},
+    'url': 'data.php',
     'callback': function(r) {
       html("suggest", r);
-    }
+    },
   });
 }
 
