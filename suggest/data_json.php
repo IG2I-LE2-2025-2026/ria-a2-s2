@@ -38,9 +38,9 @@ if (isset($_GET["debutNom"]))
 	}
 }
 // Penser ROBUSTE : la même structure renvoyée quelles que soient les conditions d'appel 
-echo "<pre>";
-print_r($data);
-echo "</pre>";
+//echo "<pre>";
+//print_r($data);
+//echo "</pre>";
 echo json_encode($data);  
 
 
