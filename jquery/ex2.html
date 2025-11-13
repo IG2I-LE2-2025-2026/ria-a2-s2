@@ -1,0 +1,41 @@
+<script src="jquery-3.7.1.min.js"></script>
+<style>
+
+</style>
+<script>
+
+var jComposantP = $("<p>")
+	.html("nouveau")
+	.click(function(){
+		console.log("click sur " + $(this).html());
+
+	});
+
+function ajouter(refBtn) {
+	var jBtn = $(refBtn); 
+	var isFirst = $("input[value='+']").first().is(jBtn);
+
+	var contenu = jBtn.next().val(); 
+	var jCloneP = jComposantP.clone(true);
+	if (contenu != "") 
+		jCloneP.html(contenu); 
+	
+	if (isFirst) {
+		$("#contenu").prepend(jCloneP); 
+	} else {
+		$("#contenu").append(jCloneP); 
+	}
+	
+}
+</script>
+
+<body>
+
+	<div id="contenu" class="controle">
+
+	</div>
+
+	
+</body>
+
+
