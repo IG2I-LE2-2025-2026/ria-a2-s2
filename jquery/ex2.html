@@ -1,10 +1,63 @@
 <script src="jquery-3.7.1.min.js"></script>
 <style>
+#contenu {
+	border:1px solid black;
+	padding:5px 0;
+}
 
+.m5 {
+	margin:5px 0;
+}
 </style>
 <script>
 
-var jComposantP = $("<p>")
+
+var jAjoutP = 
+	$("<div>")
+		.addClass("m5")
+		.append( // btn + 
+			$("<input type='button'>")
+				.val("+")
+				.click(function(){
+					// référence jQ. sur l'elt cible de l'evt => $(this) 
+					// var isFirst = $("input[value='+']").first().is($(this));
+					var isFirst = $("input[value='+']:first").is($(this));
+					var contenu = $(this).next().val(); 
+					var jCloneP = jPEditable.clone(true);
+					if (contenu != "") 
+						jCloneP.html(contenu); 
+					
+					if (isFirst) {
+						$("#contenu").prepend(jCloneP); 
+					} else {
+						$("#contenu").append(jCloneP); 
+					}
+				
+				}) // fin fn click btn + 
+		) // fin append btn+
+		.append( // champ texte 
+			$("<input type='text'>")
+		); 
+		// fin composant ajoutP
+ 
+// bouton + avec un champ de saisie de texte 
+// input type="button"
+// input type="text"
+
+// Pour attendre le chargement de la page 
+$(document).ready(function(){
+
+	// à insérer avant et après le contenu
+	$("#contenu").before(jAjoutP.clone(true));
+	$("#contenu").after(jAjoutP.clone(true));
+
+}); 
+
+
+
+
+
+var jPEditable = $("<p>")
 	.html("nouveau")
 	.click(function(){
 		console.log("click sur " + $(this).html());
@@ -27,11 +80,15 @@ function ajouter(refBtn) {
 	}
 	
 }
+
+// Ajouter des composant "ajout de P éditables" au dessus et en dessous de champ #contenu 
+
+
 </script>
 
 <body>
 
-	<div id="contenu" class="controle">
+	<div id="contenu">
 
 	</div>
 
