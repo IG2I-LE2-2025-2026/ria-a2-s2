@@ -2,7 +2,18 @@
 <style>
 #contenu {
 	border:1px solid black;
-	padding:5px 0;
+	padding:5px;
+}
+
+#contenu textarea{
+	display:block;
+	width:100%;
+	margin:3px 0;
+}
+
+#contenu p:hover{
+	cursor:pointer;
+	border:1px dashed black;
 }
 
 .m5 {
@@ -40,9 +51,6 @@ var jAjoutP =
 		); 
 		// fin composant ajoutP
  
-// bouton + avec un champ de saisie de texte 
-// input type="button"
-// input type="text"
 
 // Pour attendre le chargement de la page 
 $(document).ready(function(){
@@ -54,34 +62,43 @@ $(document).ready(function(){
 }); 
 
 
-
-
-
 var jPEditable = $("<p>")
 	.html("nouveau")
 	.click(function(){
-		console.log("click sur " + $(this).html());
+		// récupérer contenu actuel du P. => .html()
+		var contenu=$(this).html(); 
+		// créer un TA avec le même contenu => composant !
+		var jTAClone = jTAValidable
+			.clone(true)
+			.val(contenu); 
+			 
+		// remplacer le P. par ce TA => .replaceWith()
+		$(this).replaceWith(jTAClone); 
 
-	});
-
-function ajouter(refBtn) {
-	var jBtn = $(refBtn); 
-	var isFirst = $("input[value='+']").first().is(jBtn);
-
-	var contenu = jBtn.next().val(); 
-	var jCloneP = jComposantP.clone(true);
-	if (contenu != "") 
-		jCloneP.html(contenu); 
+	}); // fin jPEditable
 	
-	if (isFirst) {
-		$("#contenu").prepend(jCloneP); 
-	} else {
-		$("#contenu").append(jCloneP); 
-	}
-	
-}
+var jTAValidable = $("<textarea>")
+	.keydown(function(contexte){
+		// SI (ENTREE vient d'être appuyée)
+		if (contexte.key == "Enter") {
+			// récupérer le contenu actuel du TA
+			var contenu = $(this).val();
+			// Créer un P éditable avec ce même contenu  
+			var jPClone = jPEditable
+				.clone(true)
+				.html(contenu); 
+				
+			// remplacer le TA par ce P
+			$(this).replaceWith(jPClone);
+		}
+	}); // fin jTAValidable 
 
-// Ajouter des composant "ajout de P éditables" au dessus et en dessous de champ #contenu 
+	
+// Composant TAValidable
+// un TA 
+// sensible à keydown 
+// lorsque ENTREE est appuyée, il se transforme en PEditable
+
 
 
 </script>
