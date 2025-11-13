@@ -1,0 +1,213 @@
+<script src="jquery-3.7.1.min.js"></script>
+<style>
+#contenu {
+	border:1px solid black;
+	padding:5px;
+}
+
+#contenu textarea{
+	display:block;
+	width:100%;
+	margin:3px 0;
+}
+
+#contenu .desactive{
+	font-style:italic;
+	color:lightgrey;
+}
+
+#contenu p:not(.desactive):hover{
+	cursor:pointer;
+	border:1px dashed black;
+}
+
+#contenu p.desactive:hover{
+	cursor:not-allowed;
+}
+
+.m5 {
+	margin:5px 0;
+}
+</style>
+<script>
+
+var cache = {
+	apiRoot : "http://tomnab.fr/paragraphes-api/api", 
+	hash : "af452c206cf48596c63e0d3c5d83ac0d", 
+	idArticle : 3411
+}
+
+
+var jAjoutP = 
+	$("<div>")
+		.addClass("m5")
+		.append( // btn + 
+			$("<input type='button'>")
+				.val("+")
+				.click(function(){
+					// référence jQ. sur l'elt cible de l'evt => $(this) 
+					// var isFirst = $("input[value='+']").first().is($(this));
+					var isFirst = $("input[value='+']:first").is($(this));
+					var contenu = $(this).next().val(); 
+					var jCloneP = jPEditable.clone(true);
+					if (contenu != "") 
+						jCloneP.html(contenu); 
+					
+					if (isFirst) {
+						$("#contenu").prepend(jCloneP); 
+					} else {
+						$("#contenu").append(jCloneP); 
+					}
+				
+				}) // fin fn click btn + 
+		) // fin append btn+
+		.append( // champ texte 
+			$("<input type='text'>")
+		); 
+		// fin composant ajoutP
+ 
+
+// TODO : Lors de l'appui sur Escape 
+// dans le document 
+// parcourir les TA => $("..").each(foo) => page 68 
+// les remplacer par des P. en reprenant leur contenu initial 
+$(document).keyup(function(contexte){
+	if (contexte.key=="Escape") {
+		$("#contenu textarea").each(function(){	
+			var jPClone = jPEditable
+				.clone(true)
+				.data($(this).data())
+				.html($(this).data("contenu")); 
+				
+			$(this).replaceWith(jPClone);
+		}); 
+	}
+
+}); // fin Esc. 
+
+// afficher les méta-données s'il y en a 
+$(document).on("mouseover","#contenu *", function(){
+	var meta = $(this).data(); 
+	if (! $.isEmptyObject(meta)) console.log(meta); 
+}); 
+
+// Pour attendre le chargement de la page 
+$(document).ready(function(){
+
+	// à insérer avant et après le contenu
+	$("#contenu").before(jAjoutP.clone(true));
+	$("#contenu").after(jAjoutP.clone(true));
+
+	// récupérer les P. de l'article en cours 
+	// GET apiRoot/articles/<id>/paragraphes
+	// résultat attendu : du JSON 
+	// $.getJSON(url,dataQS, fnCB) 
+	// hash peut être fourni dans les entetes
+	// OU dans la chaine de requete 
+	
+	$.getJSON(	cache.apiRoot
+							+"/articles/"+cache.idArticle 
+							+ "/paragraphes", 
+							{hash:cache.hash}, 
+							function(oRep){
+		console.log(oRep);					
+		var i; 
+		for(i=0;i<oRep.paragraphes.length;i++) {
+			var jPClone = jPEditable
+				.clone(true)
+				.data(oRep.paragraphes[i])
+				.html(oRep.paragraphes[i].contenu); 
+				
+			$("#contenu").append(jPClone);
+		}					
+	}); // fin getJSON paragraphes
+	
+}); 
+
+
+var jPEditable = $("<p>")
+	.html("nouveau")
+	.click(function(){
+	
+		// interdire l'édition des P. désactives
+		if ($(this).hasClass("desactive"))
+			return;
+	
+		// récupérer contenu actuel du P. => .html()
+		var contenu=$(this).html(); 
+		// créer un TA avec le même contenu => composant !
+		var jTAClone = jTAValidable
+			.clone(true)
+			.val(contenu)
+			.data($(this).data());
+			//.data("initValue",contenu); 
+			 
+		// remplacer le P. par ce TA => .replaceWith()
+		$(this).replaceWith(jTAClone); 
+		jTAClone.select();
+
+	}); // fin jPEditable
+	
+var jTAValidable = $("<textarea>")
+	.keydown(function(contexte){
+		// SI (ENTREE vient d'être appuyée)
+		if (contexte.key == "Enter") {
+			// récupérer le contenu actuel du TA
+			var contenu = $(this).val();
+			var meta =  $(this).data();
+			// Créer un P éditable avec ce même contenu  
+			var jPClone = jPEditable
+				.clone(true)
+				.addClass("desactive")
+				.data(meta)
+				.html(contenu); 
+				
+			// remplacer le TA par ce P
+			$(this).replaceWith(jPClone);
+			
+			// envoyer une requete de mise à jour 
+			// au serveur 
+			// PUT /articles/id/paragraphes/id
+			// + hash 
+			// + contenu 
+			
+			$.ajax({
+				type: "PUT",
+				url: cache.apiRoot 
+						+ "/articles/" + cache.idArticle 
+						+ "/paragraphes/" + meta.id
+						+ "?contenu=" + contenu,		
+				headers: {"hash":cache.hash},
+				success: function(oRep){
+					// TODO : mettre à jour le P. 
+					// concerné par la requete AJAX PUT
+					// où est-il ??? 
+					// jPClone est justement enfermé dans le scope de la fonction !! 
+						jPClone.data("contenu",oRep.paragraphe.contenu);
+						jPClone.removeClass("desactive");
+				},
+				dataType: "json"
+			});
+			
+			// Lorsque le serveur aura validé 
+			// la mise à jour 
+			// on enlèvera la classe "desactive"
+			
+		}
+	}); // fin jTAValidable 
+
+	
+
+
+</script>
+
+<body>
+
+	<div id="contenu">
+
+	</div>
+
+	
+</body>
+
+
