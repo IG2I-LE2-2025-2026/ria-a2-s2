@@ -56,6 +56,18 @@ var jAjoutP =
 // dans le document 
 // parcourir les TA => $("..").each(foo) => page 68 
 // les remplacer par des P. en reprenant leur contenu initial 
+$(document).keyup(function(contexte){
+	if (contexte.key=="Escape") {
+		$("#contenu textarea").each(function(){	
+			var jPClone = jPEditable
+				.clone(true)
+				.html($(this).data("initValue")); 
+				
+			$(this).replaceWith(jPClone);
+		}); 
+	}
+
+}); // fin Esc. 
 
 // afficher les méta-données s'il y en a 
 $(document).on("mouseover","#contenu *", function(){
