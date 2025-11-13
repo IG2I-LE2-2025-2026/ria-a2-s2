@@ -52,6 +52,17 @@ var jAjoutP =
 		// fin composant ajoutP
  
 
+// TODO : Lors de l'appui sur Escape 
+// dans le document 
+// parcourir les TA => $("..").each(foo) => page 68 
+// les remplacer par des P. en reprenant leur contenu initial 
+
+// afficher les méta-données s'il y en a 
+$(document).on("mouseover","#contenu *", function(){
+	var meta = $(this).data(); 
+	if (! $.isEmptyObject(meta)) console.log(meta); 
+}); 
+
 // Pour attendre le chargement de la page 
 $(document).ready(function(){
 
@@ -70,7 +81,9 @@ var jPEditable = $("<p>")
 		// créer un TA avec le même contenu => composant !
 		var jTAClone = jTAValidable
 			.clone(true)
-			.val(contenu); 
+			.val(contenu)
+			.data({initValue: contenu, cle2:"val2"});
+			//.data("initValue",contenu); 
 			 
 		// remplacer le P. par ce TA => .replaceWith()
 		$(this).replaceWith(jTAClone); 
